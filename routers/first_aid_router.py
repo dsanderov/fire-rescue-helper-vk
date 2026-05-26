@@ -10,6 +10,10 @@ from handlers.first_aid.no_breathing_cpr import (
     handle_no_breathing_cpr
 )
 
+from handlers.first_aid.bleeding import (
+    handle_bleeding
+)
+
 from services.messages.sender import send_message
 
 
@@ -26,8 +30,11 @@ def handle_first_aid_router(vk, user_id, text):
         handle_no_breathing_cpr(vk, user_id)
         return True
 
+    if text == "🩸 кровотечение":
+        handle_bleeding(vk, user_id)
+        return True
+
     first_aid_stub_messages = {
-        "🩸 кровотечение": "Раздел «Кровотечение» пока в разработке.",
         "🔥 ожоги": "Раздел «Ожоги» пока в разработке.",
         "🧊 обморожения": "Раздел «Обморожения» пока в разработке.",
         "☠ отравление co": "Раздел «Отравление угарным газом» пока в разработке.",
