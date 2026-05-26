@@ -1,90 +1,32 @@
-# =========================================
-# ХРАНИЛИЩЕ СОСТОЯНИЙ ПОЛЬЗОВАТЕЛЕЙ
-# =========================================
-
 user_states = {}
+user_state_data = {}
 
 
-# =========================================
-# УСТАНОВИТЬ СОСТОЯНИЕ
-# =========================================
+def set_state(user_id, state, data=None):
+    user_states[user_id] = state
 
-def set_state(user_id, state_name, data=None):
-
-    # Если пользователь уже есть —
-    # сохраняем старые data
-    old_data = {}
-
-    if user_id in user_states:
-        old_data = user_states[user_id]["data"]
-
-    # Если передали новые data —
-    # объединяем
     if data is not None:
-        old_data.update(data)
+        user_state_data[user_id] = data
 
-    user_states[user_id] = {
-        "state": state_name,
-        "data": old_data
-    }
-
-
-# =========================================
-# ПОЛУЧИТЬ СОСТОЯНИЕ
-# =========================================
 
 def get_state(user_id):
-
-    if user_id not in user_states:
-        return None
-
-    return user_states[user_id]["state"]
+    return user_states.get(user_id)
 
 
-# =========================================
-# ПОЛУЧИТЬ DATA
-# =========================================
+def update_state_data(user_id, data):
+    if user_id not in user_state_data:
+        user_state_data[user_id] = {}
+
+    user_state_data[user_id].update(data)
+
 
 def get_state_data(user_id):
+    return user_state_data.get(user_id, {})
 
-    if user_id not in user_states:
-        return {}
-
-    return user_states[user_id]["data"]
-
-
-# =========================================
-# ОБНОВИТЬ DATA
-# =========================================
-
-def update_state_data(user_id, new_data):
-
-    if user_id not in user_states:
-
-        user_states[user_id] = {
-            "state": None,
-            "data": {}
-        }
-
-    user_states[user_id]["data"].update(
-        new_data
-    )
-
-
-# =========================================
-# ОЧИСТИТЬ СОСТОЯНИЕ
-# =========================================
 
 def clear_state(user_id):
-
     if user_id in user_states:
         del user_states[user_id]
 
-
-# =========================================
-# ПРОВЕРКА СОСТОЯНИЯ
-# =========================================
-
-def is_state(user_id, state_name):
-
-    return get_state(user_id) == state_name
+    if user_id in user_state_data:
+        del user_state_data[user_id]

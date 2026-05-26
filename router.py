@@ -11,6 +11,10 @@ from services.navigation.menu_actions import (
 
 from services.messages.sender import send_message
 
+from services.states.state_manager import (
+    clear_state
+)
+
 from routers.main_router import handle_main_router
 
 from routers.situations_router import (
@@ -36,7 +40,10 @@ from routers.reports_router import (
 
 def route_message(vk, user_id, text):
 
-    if text == "⬅ главное меню":
+    if text in ["⬅ главное меню", "❌ отмена"]:
+
+        clear_state(user_id)
+
         reset_navigation(user_id)
 
         handle_main_menu(vk, user_id)
