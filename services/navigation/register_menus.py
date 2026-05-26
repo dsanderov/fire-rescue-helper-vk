@@ -6,6 +6,10 @@ from handlers.situations.situations_menu import (
     handle_situations_menu
 )
 
+from handlers.situations.fires.fires_menu import (
+    handle_fires_menu
+)
+
 from handlers.calculators.calculators_menu import (
     handle_calculators_menu
 )
@@ -26,6 +30,7 @@ from handlers.checklists.checklists_menu import (
 def register_all_menus():
     register_menu("main_menu", handle_main_menu)
     register_menu("situations_menu", handle_situations_menu)
+    register_menu("fires_menu", handle_fires_menu)
     register_menu("calculators_menu", handle_calculators_menu)
     register_menu("gdzs_menu", handle_gdzs_menu)
     register_menu("first_aid_menu", handle_first_aid_menu)
