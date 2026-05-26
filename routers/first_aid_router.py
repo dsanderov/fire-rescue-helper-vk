@@ -22,7 +22,29 @@ from handlers.first_aid.electrical_injury import (
     handle_electrical_injury
 )
 
-from services.messages.sender import send_message
+from handlers.first_aid.burns import (
+    handle_burns
+)
+
+from handlers.first_aid.fractures import (
+    handle_fractures
+)
+
+from handlers.first_aid.frostbite import (
+    handle_frostbite
+)
+
+from handlers.first_aid.shock import (
+    handle_shock
+)
+
+from handlers.first_aid.foreign_body_airway import (
+    handle_foreign_body_airway
+)
+
+from handlers.first_aid.triage import (
+    handle_triage
+)
 
 
 def handle_first_aid_router(vk, user_id, text):
@@ -42,6 +64,14 @@ def handle_first_aid_router(vk, user_id, text):
         handle_bleeding(vk, user_id)
         return True
 
+    if text == "🔥 ожоги":
+        handle_burns(vk, user_id)
+        return True
+
+    if text == "🧊 обморожения":
+        handle_frostbite(vk, user_id)
+        return True
+
     if text == "☠ отравление co":
         handle_carbon_monoxide(vk, user_id)
         return True
@@ -50,21 +80,20 @@ def handle_first_aid_router(vk, user_id, text):
         handle_electrical_injury(vk, user_id)
         return True
 
-    first_aid_stub_messages = {
-        "🔥 ожоги": "Раздел «Ожоги» пока в разработке.",
-        "🧊 обморожения": "Раздел «Обморожения» пока в разработке.",
-        "🦴 переломы": "Раздел «Переломы» пока в разработке.",
-        "🫀 шок": "Раздел «Шок» пока в разработке.",
-        "🫁 инородное тело": "Раздел «Инородное тело дыхательных путей» пока в разработке.",
-        "🚑 сортировка": "Раздел «Сортировка пострадавших» пока в разработке."
-    }
+    if text == "🦴 переломы":
+        handle_fractures(vk, user_id)
+        return True
 
-    if text in first_aid_stub_messages:
-        send_message(
-            vk=vk,
-            user_id=user_id,
-            message=first_aid_stub_messages[text]
-        )
+    if text == "🫀 шок":
+        handle_shock(vk, user_id)
+        return True
+
+    if text == "🫁 инородное тело":
+        handle_foreign_body_airway(vk, user_id)
+        return True
+
+    if text == "🚑 сортировка":
+        handle_triage(vk, user_id)
         return True
 
     return False
