@@ -21,6 +21,10 @@ from routers.calculators.gdzs_router import (
     handle_gdzs_router
 )
 
+from routers.calculators.free_development_router import (
+    handle_free_development_router
+)
+
 from routers.first_aid_router import (
     handle_first_aid_router
 )
@@ -73,6 +77,9 @@ def route_message(vk, user_id, text):
         return
 
     if handle_gdzs_router(vk, user_id, text):
+        return
+
+    if handle_free_development_router(vk, user_id, text):
         return
 
     if handle_first_aid_router(vk, user_id, text):

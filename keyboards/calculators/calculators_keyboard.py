@@ -12,6 +12,13 @@ def get_calculators_keyboard():
     keyboard.add_line()
 
     keyboard.add_button(
+        "🔥 Свободное развитие пожара",
+        color=VkKeyboardColor.PRIMARY
+    )
+
+    keyboard.add_line()
+
+    keyboard.add_button(
         "💧 Вода в АЦ",
         color=VkKeyboardColor.SECONDARY
     )
