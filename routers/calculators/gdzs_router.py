@@ -73,7 +73,7 @@ def handle_device_input(vk, user_id, text):
             f"Выбран тип СИЗОД: {device_type}\n\n"
             "Введите минимальное давление при включении "
             "Pmin.вкл, кгс/см².\n\n"
-            "Пример: 300"
+            "Пример: 270"
         )
     )
 
@@ -87,7 +87,7 @@ def handle_pressure_input(vk, user_id, text):
         send_message(
             vk=vk,
             user_id=user_id,
-            message="❌ Введите давление числом. Например: 300"
+            message="❌ Введите давление числом. Например: 270"
         )
         return True
 
@@ -158,7 +158,7 @@ def handle_volume_input(vk, user_id, text):
         message=(
             "Введите время включения в СИЗОД Tвкл.\n\n"
             "Формат: ЧЧ:ММ\n"
-            "Пример: 21:15"
+            "Пример: 14:30"
         )
     )
 
@@ -170,7 +170,7 @@ def handle_start_time_input(vk, user_id, text):
         send_message(
             vk=vk,
             user_id=user_id,
-            message="❌ Введите время в формате ЧЧ:ММ. Например: 21:15"
+            message="❌ Введите время в формате ЧЧ:ММ. Например: 14:30"
         )
         return True
 
@@ -220,41 +220,11 @@ def format_result(result):
     device_type = result["device_type"]
     p_min = result["p_min"]
     cylinder_volume = result["cylinder_volume"]
-
     p_max_drop = result["p_max_drop"]
     p_exit = result["p_exit"]
     delta_time = result["delta_time"]
     total_time = result["total_time"]
-
-    if device_type == "ДАСВ":
-        delta_formula = (
-            f"ΔT = Pmax.пад × Vб / 45 = "
-            f"{format_number(p_max_drop)} × "
-            f"{format_number(cylinder_volume)} / 45 = "
-            f"{delta_time:.1f} мин"
-        )
-
-        total_formula = (
-            f"Tобщ = Pmin.вкл × Vб / 45 = "
-            f"{format_number(p_min)} × "
-            f"{format_number(cylinder_volume)} / 45 = "
-            f"{total_time:.1f} мин"
-        )
-
-    else:
-        delta_formula = (
-            f"ΔT = Pmax.пад × Vб / 2 = "
-            f"{format_number(p_max_drop)} × "
-            f"{format_number(cylinder_volume)} / 2 = "
-            f"{delta_time:.1f} мин"
-        )
-
-        total_formula = (
-            f"Tобщ = Pmin.вкл × Vб / 2 = "
-            f"{format_number(p_min)} × "
-            f"{format_number(cylinder_volume)} / 2 = "
-            f"{total_time:.1f} мин"
-        )
+    divisor = result["divisor"]
 
     return (
         "🫁 Расчёт работы звена ГДЗС в СИЗОД\n\n"
@@ -274,16 +244,25 @@ def format_result(result):
         f"{p_exit:.1f} кгс/см²\n\n"
 
         "3. Промежуток времени до подачи команды на возвращение:\n"
-        f"{delta_formula}\n\n"
+        f"ΔT = Pmax.пад × Vб / {divisor} = "
+        f"{format_number(p_max_drop)} × "
+        f"{format_number(cylinder_volume)} / {divisor} = "
+        f"{delta_time:.1f} мин\n\n"
 
         "4. Время подачи команды на возвращение:\n"
         f"Tвых = Tвкл + ΔT = {result['exit_command_time']}\n\n"
 
         "5. Общее примерное время работы звена в НДС:\n"
-        f"{total_formula}\n\n"
+        f"Tобщ = Pmin.вкл × Vб / {divisor} = "
+        f"{format_number(p_min)} × "
+        f"{format_number(cylinder_volume)} / {divisor} = "
+        f"{total_time:.1f} мин\n\n"
 
         "6. Время обязательного возвращения из НДС:\n"
         f"Tвозвр = Tвкл + Tобщ = {result['return_time']}\n\n"
+
+        f"Для {device_type} в расчёте использована величина расхода: "
+        f"{result['consumption_label']}.\n\n"
 
         "Расчёт выполнен по формулам Приложения № 3 "
         "к Приказу МЧС России от 27.06.2022 № 640."
