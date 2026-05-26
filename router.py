@@ -5,33 +5,65 @@ from services.navigation.navigation import (
     reset_navigation
 )
 
-from services.navigation.menu_actions import open_registered_menu
+from services.navigation.menu_actions import (
+    open_registered_menu
+)
+
 from services.messages.sender import send_message
 
 from routers.main_router import handle_main_router
-from routers.situations_router import handle_situations_router
-from routers.calculators.gdzs_router import handle_gdzs_router
-from routers.first_aid_router import handle_first_aid_router
+
+from routers.situations_router import (
+    handle_situations_router
+)
+
+from routers.calculators.gdzs_router import (
+    handle_gdzs_router
+)
+
+from routers.first_aid_router import (
+    handle_first_aid_router
+)
+
+from routers.reports_router import (
+    handle_reports_router
+)
 
 
 def route_message(vk, user_id, text):
 
     if text == "⬅ главное меню":
         reset_navigation(user_id)
+
         handle_main_menu(vk, user_id)
+
         return
 
     if text == "⬅ назад":
         previous_menu = go_back(user_id)
 
         if previous_menu is None:
-            open_registered_menu(vk, user_id, "main_menu")
+            open_registered_menu(
+                vk,
+                user_id,
+                "main_menu"
+            )
+
             return
 
-        if open_registered_menu(vk, user_id, previous_menu):
+        if open_registered_menu(
+            vk,
+            user_id,
+            previous_menu
+        ):
             return
 
-        open_registered_menu(vk, user_id, "main_menu")
+        open_registered_menu(
+            vk,
+            user_id,
+            "main_menu"
+        )
+
         return
 
     if handle_main_router(vk, user_id, text):
@@ -44,6 +76,9 @@ def route_message(vk, user_id, text):
         return
 
     if handle_first_aid_router(vk, user_id, text):
+        return
+
+    if handle_reports_router(vk, user_id, text):
         return
 
     send_message(
