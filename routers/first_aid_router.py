@@ -1,0 +1,42 @@
+from handlers.first_aid.first_aid_menu import (
+    handle_first_aid_menu
+)
+
+from handlers.first_aid.unconscious_person import (
+    handle_unconscious_person
+)
+
+from services.messages.sender import send_message
+
+
+def handle_first_aid_router(vk, user_id, text):
+    if text == "🩺 первая помощь":
+        handle_first_aid_menu(vk, user_id)
+        return True
+
+    if text == "🚫 нет сознания":
+        handle_unconscious_person(vk, user_id)
+        return True
+
+    first_aid_stub_messages = {
+        "🫁 нет дыхания / слр": "Раздел «Нет дыхания / СЛР» пока в разработке.",
+        "🩸 кровотечение": "Раздел «Кровотечение» пока в разработке.",
+        "🔥 ожоги": "Раздел «Ожоги» пока в разработке.",
+        "🧊 обморожения": "Раздел «Обморожения» пока в разработке.",
+        "☠ отравление co": "Раздел «Отравление угарным газом» пока в разработке.",
+        "⚡ электротравма": "Раздел «Электротравма» пока в разработке.",
+        "🦴 переломы": "Раздел «Переломы» пока в разработке.",
+        "🫀 шок": "Раздел «Шок» пока в разработке.",
+        "🫁 инородное тело": "Раздел «Инородное тело дыхательных путей» пока в разработке.",
+        "🚑 сортировка": "Раздел «Сортировка пострадавших» пока в разработке."
+    }
+
+    if text in first_aid_stub_messages:
+        send_message(
+            vk=vk,
+            user_id=user_id,
+            message=first_aid_stub_messages[text]
+        )
+        return True
+
+    return False

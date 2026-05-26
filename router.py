@@ -11,22 +11,15 @@ from services.messages.sender import send_message
 from routers.main_router import handle_main_router
 from routers.situations_router import handle_situations_router
 from routers.calculators.gdzs_router import handle_gdzs_router
+from routers.first_aid_router import handle_first_aid_router
 
 
 def route_message(vk, user_id, text):
-
-    # =========================================
-    # ЖЁСТКИЙ ВОЗВРАТ В ГЛАВНОЕ МЕНЮ
-    # =========================================
 
     if text == "⬅ главное меню":
         reset_navigation(user_id)
         handle_main_menu(vk, user_id)
         return
-
-    # =========================================
-    # УНИВЕРСАЛЬНАЯ КНОПКА НАЗАД
-    # =========================================
 
     if text == "⬅ назад":
         previous_menu = go_back(user_id)
@@ -48,6 +41,9 @@ def route_message(vk, user_id, text):
         return
 
     if handle_gdzs_router(vk, user_id, text):
+        return
+
+    if handle_first_aid_router(vk, user_id, text):
         return
 
     send_message(
