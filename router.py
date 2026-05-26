@@ -37,6 +37,10 @@ from routers.reports_router import (
     handle_reports_router
 )
 
+from routers.checklists_router import (
+    handle_checklists_router
+)
+
 
 def route_message(vk, user_id, text):
 
@@ -93,6 +97,9 @@ def route_message(vk, user_id, text):
         return
 
     if handle_reports_router(vk, user_id, text):
+        return
+
+    if handle_checklists_router(vk, user_id, text):
         return
 
     send_message(

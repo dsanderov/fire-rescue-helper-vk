@@ -18,6 +18,10 @@ from handlers.first_aid.first_aid_menu import (
     handle_first_aid_menu
 )
 
+from handlers.checklists.checklists_menu import (
+    handle_checklists_menu
+)
+
 
 def register_all_menus():
     register_menu("main_menu", handle_main_menu)
@@ -25,3 +29,4 @@ def register_all_menus():
     register_menu("calculators_menu", handle_calculators_menu)
     register_menu("gdzs_menu", handle_gdzs_menu)
     register_menu("first_aid_menu", handle_first_aid_menu)
+    register_menu("checklists_menu", handle_checklists_menu)
