@@ -14,6 +14,10 @@ from handlers.first_aid.bleeding import (
     handle_bleeding
 )
 
+from handlers.first_aid.carbon_monoxide import (
+    handle_carbon_monoxide
+)
+
 from services.messages.sender import send_message
 
 
@@ -34,10 +38,13 @@ def handle_first_aid_router(vk, user_id, text):
         handle_bleeding(vk, user_id)
         return True
 
+    if text == "☠ отравление co":
+        handle_carbon_monoxide(vk, user_id)
+        return True
+
     first_aid_stub_messages = {
         "🔥 ожоги": "Раздел «Ожоги» пока в разработке.",
         "🧊 обморожения": "Раздел «Обморожения» пока в разработке.",
-        "☠ отравление co": "Раздел «Отравление угарным газом» пока в разработке.",
         "⚡ электротравма": "Раздел «Электротравма» пока в разработке.",
         "🦴 переломы": "Раздел «Переломы» пока в разработке.",
         "🫀 шок": "Раздел «Шок» пока в разработке.",
