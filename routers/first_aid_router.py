@@ -6,6 +6,10 @@ from handlers.first_aid.unconscious_person import (
     handle_unconscious_person
 )
 
+from handlers.first_aid.no_breathing_cpr import (
+    handle_no_breathing_cpr
+)
+
 from services.messages.sender import send_message
 
 
@@ -18,8 +22,11 @@ def handle_first_aid_router(vk, user_id, text):
         handle_unconscious_person(vk, user_id)
         return True
 
+    if text == "🫁 нет дыхания / слр":
+        handle_no_breathing_cpr(vk, user_id)
+        return True
+
     first_aid_stub_messages = {
-        "🫁 нет дыхания / слр": "Раздел «Нет дыхания / СЛР» пока в разработке.",
         "🩸 кровотечение": "Раздел «Кровотечение» пока в разработке.",
         "🔥 ожоги": "Раздел «Ожоги» пока в разработке.",
         "🧊 обморожения": "Раздел «Обморожения» пока в разработке.",
